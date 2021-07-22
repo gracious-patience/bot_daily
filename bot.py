@@ -623,6 +623,10 @@ def main():
     dp.add_handler(CommandHandler("help", help))
     dp.add_handler(CommandHandler("morn", morn))
     dp.add_handler(CommandHandler("eve", eve))
+    dp.add_handler(CommandHandler("dimaeve", dimaeve))
+    dp.add_handler(CommandHandler("dimamorn", dimamorn))
+    dp.add_handler(CommandHandler("oureve", oureve))
+    dp.add_handler(CommandHandler("ourmorn", ourmorn))
     # dp.add_handler(CommandHandler("ourmorn", ourmorn))
     # dp.add_handler(CommandHandler("oureve", oureve))
 
