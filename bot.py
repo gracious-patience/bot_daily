@@ -3,6 +3,7 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import os
 import requests
 import urllib.request
+
 import json
     
 
@@ -48,7 +49,14 @@ def get_price(coin):
     url = 'https://api.coingecko.com/api/v3/coins/'+ coin
     
         
-    s = get_soup(url)
+
+    while True:
+        try:
+            s = get_soup(url)
+            break
+        except(urllib.error.HTTPError):
+            return '0','0'
+    
     price = s['market_data']['price_change_24h'], s['market_data']['current_price']['usd']
     return price
 
@@ -59,7 +67,15 @@ def get_volume(coin):
     
    
     url = 'https://api.coingecko.com/api/v3/coins/'+ coin
-    s = get_soup(url)
+
+    while True:
+        try:
+            s = get_soup(url)
+            break
+        except(urllib.error.HTTPError):
+            text = 'Нет на Геко \n'
+            return text
+    
 
        
     text = str(s['market_data']['total_volume']['usd']) + ', '
@@ -179,177 +195,38 @@ def get_bot_info(pairs):
     return text
 
 
+with open('cs.txt') as f:
+    cs = f.read().splitlines()
 
-cs = [
-   'BITS',
-   # 'PNIXS',
-    'MRCH',
-    'PUP',
-   'KRZ',
-   'LIME',
-   
-    'DHV',
-    'SIG',
-    'HZD',
-    'UPI',
-    'G999',
-    'DID',
-    'EXCC', 
-    'ZLW',
-    'UTM',
-    'TAU',
-    'AMC',
+with open('ts.txt') as f:
+    ts = f.read().splitlines()
+
+with open('ps.txt', 'r') as fobj:
+    ps = [[str(num) for num in line.split()] for line in fobj]
+
+with open('d_cs.txt') as f:
+    d_cs = f.read().splitlines()
+
+with open('ts.txt') as f:
+    d_ts = f.read().splitlines()
+
+with open('ps.txt', 'r') as fobj:
+    d_ps = [[str(num) for num in line.split()] for line in fobj] 
 
 
-]
 
-ps = [
-    ['BTC_BITS_probit', 'BTC_BITSW_stex', 'ETH_BITSW_STEX'],
-    # ['USDT_PNIXS_bitmart'],
-     ['USDT_MRCH_gateio',
-        'ETH_MRCH_gateio',
-        'USDT_MRCH_hotbit'],
-    ['USDT_PUP_timex',
-    'BTC_PUP_timex'],
-    ['USDT_KRZ_xt'],
-    ['USDT_LIME_gateio',
-        'ETH_LIME_gateio',
-        'BTC_LIME_gateio'],
-   
-    ['USDT_DHV_gateio',
-        'ETH_DHV_gateio',
-        'USDT_DHV_probit'],
-    ['USDT_SIG_bittrex',
-        'ETH_SIG_bittrex',
-        'BTC_SIG_bittrex'],
-    [ 'USDT_HZD_probit',
-        'ETH_HZD_probit'],
-    [ 'USDT_UPI_probit',
-        'USDT_UPI_bitforex',
-        'USDT_UPI_exmarkets',],
-    ['USD_G999_hitbtc',
-        'ETH_G999_hitbtc',
-        'BTC_G999_hitbtc',
-        'USDT_G999_bibox',
-        'ETH_G999_bibox',
-        'BTC_G999_bibox',
-        'USDT_G999_coinsuper',
-        'ETH_G999_coinsuper',
-        'BTC_G999_coinsuper',
-        'USDT_G999_bitforex'],
-    ['BTC_DID_probit',
-        'USDT_DID_probit',
-        'BTC_DID_xt',
-        'USDT_DID_xt'],
-    ['BTC_EXCC_probit',
-        'USDT_EXCC_probit',
-        'BTC_EXCC_bitforex',
-        'USDT_EXCC_bitforex'],
-
-        ['USDT_ZLW_bitforex', 'USDT_ZLW_probit', 'BTC_ZLW_probit'], 
-        ['USDT_UTM_xt'], 
-        ['USDT_TAU_bigone'],
-        ['USDT_AMC_bitmart'],
-            
-]
-
-
-ts = [
-    'bitswift',
-   # # 'phoenix-defi-finance',
-   'merchdao',
-   'bitswift',
-   'bitswift',
-    'ime-lab',
     
-    'dehive',
-    'xsigma',
-    'horizondollar',
-    'pawtocol',
-    'g999',
-    'didcoin',
-    'exchangecoin', 
-    'zelwin', 
-    'bitswift',
-    'lamden',
-    'bitswift'
-]
-
-d_cs = [
-    
-   'AG8',
-    'CORX',
-    'SGE',
-    'COR',
-    'UBX',
-    'TBCC',
-    'TOZ',
-    'TEAT',
-   #  'PROT',
-    'PAYB',
-    'DXF',
-    'NBX',
-    'DDOS'
-
-]
-
-d_ps = [
-     
-      ['USDT_AG8_probit',
-    'USDT_AG8_bibox'],
-    ['USDT_CORX_probit',
-     'BTC_CORX_probit',
-     'USDT_CORX_bibox',
-     'BTC_CORX_bitmart'],
-     ['USDT_SGE_bitmart'],
-     ['USDT_COR_probit'],
-     ['USDT_UBX_kucoin',
-     'ETH_UBX_kucoin',
-     'USDT_UBX_exmarkets'],
-     ['USDT_TBCC_probit',
-     'ETH_TBCC_probit',
-     'USDT_TBCC_xt',
-     'USDT_TBCC_bibox'],
-     ['ETH_TOZ_probit'],
-     ['ETH_TEAT_probit',
-     'BTC_TEAT_probit'],
-    #  ['USDT_PROT_probit',
-    #  'USDT_PROT_hotbit'],
-     ['USDT_PAYB_probit',
-     'ETH_PAYB_probit'],
-     ['BTC_DXF_stex',
-     'ETH_DXF_stex',
-     'USDT_DXF_dexfin'],
-     ['BTC_NBX_crex24',
-     'ETH_NBX_crex24',
-     'USDT_NBX_crex24',
-     'BTC_NBX_stex',
-     'ETH_NBX_stex',
-     'BTC_NBX_hotbit',
-     'USDT_NBX_hotbit'],
-     ['USDT_DDOS_gateio']
+print(d_cs)
+print(d_ts)
+print(d_ps)
 
 
-]
-
-d_ts = [
-   
-     'atromg8',
-    'corionx',
-    'society-of-galactic-exploration',
-    'coreto',
-    'ubix-network',
-    'tbcc',
-    'tozex',
-    'teal',
-    # 'prostarter',
-    'paybswap',
-    'dexfin',
-    'netbox-coin',
-    'disbalancer'
 
 
-]
+
+
+
+
 
 # report()
 
@@ -378,6 +255,7 @@ def report(clients, pairs_for_client, token_names, time_open, time_close, update
 def get_soup(url):
 
     f = urllib.request.urlopen(url)
+    
     nyb = f.read()
     mystr = nyb.decode("utf8")
     f.close()
@@ -548,7 +426,118 @@ def dimaeve(update, context):
     update.message.reply_text('Выгрузка началась')
     
     report (d_cs, d_ps, d_ts, t1, t2, update)
-    
+
+
+def mypaireve(update, context):
+    client = []
+    pairs = []
+    token = []
+    if len(context.args) >= 3:
+        client.append(context.args[0])
+        token.append(context.args[1])
+        pair = []
+        for i in range (2, len(context.args)):
+            pair.append(context.args[i])
+        pairs.append(pair)
+
+        t1 = datetime.today().strftime("%Y-%m-%d") + ' 07:00:00'
+        t2 = datetime.today().strftime("%Y-%m-%d") + ' 15:00:00'
+        print(t1, t2)
+        update.message.reply_text('Выгрузка началась')
+        
+        report (client, pairs, token, t1, t2, update)
+    else:
+        update.message.reply_text('Плохой запрос, бро. Нужно: TICKER token_name_from_coingecko LEFT1_RIGHT1_exchange1 ... LEFTn_RIGHTn_exchangen')
+        return
+
+def mypairmorn(update, context):
+    client = []
+    pairs = []
+    token = []
+    if len(context.args) >= 3:
+        client.append(context.args[0])
+        token.append(context.args[1])
+        pair = []
+        for i in range (2, len(context.args)):
+            pair.append(context.args[i])
+        pairs.append(pair)
+
+        t1 = (datetime.today() - timedelta(days=1)).strftime("%Y-%m-%d") + ' 15:00:00'
+        t2 = datetime.today().strftime("%Y-%m-%d") + ' 07:00:00'
+        print(t1, t2)
+        update.message.reply_text('Выгрузка началась')
+        
+        report (client, pairs, token, t1, t2, update)
+    else:
+        update.message.reply_text('Плохой запрос, бро. Нужно: TICKER token_name_from_coingecko LEFT1_RIGHT1_exchange1 ... LEFTn_RIGHTn_exchangen')
+        return
+
+def addpairgrant(update, context):
+    if len(context.args) >= 3:
+        cs.append(context.args[0])
+        ts.append(context.args[1])
+        pair = []
+        text = ''
+        for i in range (2, len(context.args)):
+            pair.append(context.args[i])
+            if i != (len(context.args) - 1):
+                text += context.args[i] + ' '
+            else:
+                text += context.args[i]
+        ps.append(pair)
+
+        with open("cs.txt", "a") as myfile:
+            myfile.write('\n' + context.args[0])
+        with open("ts.txt", "a") as myfile:
+            myfile.write('\n' + context.args[1])
+        with open("ps.txt", "a") as myfile:
+            myfile.write('\n' + text)
+
+        update.message.reply_text('Удачно записана новая пара')
+
+    else:
+        update.message.reply_text('Плохой запрос, бро. Нужно: TICKER token_name_from_coingecko LEFT1_RIGHT1_exchange1 ... LEFTn_RIGHTn_exchangen')
+        return
+
+def addpairdima(update, context):
+    if len(context.args) >= 3:
+        d_cs.append(context.args[0])
+        d_ts.append(context.args[1])
+        pair = []
+        text = ''
+        for i in range (2, len(context.args)):
+            pair.append(context.args[i])
+            if i != (len(context.args) - 1):
+                text += context.args[i] + ' '
+            else:
+                text += context.args[i]
+        d_ps.append(pair)
+
+        with open("d_cs.txt", "a") as myfile:
+            myfile.write('\n' + context.args[0])
+        with open("d_ts.txt", "a") as myfile:
+            myfile.write('\n' + context.args[1])
+        with open("d_ps.txt", "a") as myfile:
+            myfile.write('\n' + text)
+
+        update.message.reply_text('Удачно записана новая пара')
+
+    else:
+        update.message.reply_text('Плохой запрос, бро. Нужно: TICKER token_name_from_coingecko LEFT1_RIGHT1_exchange1 ... LEFTn_RIGHTn_exchangen')
+        return 
+
+def dimapairs(update, context):
+    with open('d_ps.txt', 'r') as fobj:
+        pairs = [[str(num) for num in line.split()] for line in fobj] 
+    update.message.reply_text(str(pairs))
+
+def grantpairs(update, context):
+    with open('ps.txt', 'r') as fobj:
+        pairs = [[str(num) for num in line.split()] for line in fobj] 
+    update.message.reply_text(str(pairs))
+
+
+        
 
 def echo(update, context):
     """Echo the user message."""
@@ -627,6 +616,12 @@ def main():
     dp.add_handler(CommandHandler("dimamorn", dimamorn))
     dp.add_handler(CommandHandler("oureve", oureve))
     dp.add_handler(CommandHandler("ourmorn", ourmorn))
+    dp.add_handler(CommandHandler("mypaireve", mypaireve))
+    dp.add_handler(CommandHandler("mypaireve", mypairmorn))
+    dp.add_handler(CommandHandler("addpairgrant", addpairgrant))
+    dp.add_handler(CommandHandler("addpairgdima", addpairdima))
+    dp.add_handler(CommandHandler("dimapairs", dimapairs))
+    dp.add_handler(CommandHandler("grantpairs", grantpairs))
     # dp.add_handler(CommandHandler("ourmorn", ourmorn))
     # dp.add_handler(CommandHandler("oureve", oureve))
 
