@@ -1,0 +1,12 @@
+USDT_AG8_probit USDT_AG8_bibox
+USDT_CORX_probit BTC_CORX_probit USDT_CORX_bibox BTC_CORX_bitmart
+USDT_SGE_bitmart
+USDT_COR_probit
+USDT_UBX_kucoin ETH_UBX_kucoin USDT_UBX_exmarkets
+USDT_TBCC_probit ETH_TBCC_probit USDT_TBCC_xt USDT_TBCC_bibox
+ETH_TOZ_probit
+ETH_TEAT_probit BTC_TEAT_probit
+USDT_PAYB_probit ETH_PAYB_probit
+BTC_DXF_stex ETH_DXF_stex USDT_DXF_dexfin
+BTC_NBX_crex24 ETH_NBX_crex24 USDT_NBX_crex24 BTC_NBX_stex ETH_NBX_stex BTC_NBX_hotbit USDT_NBX_hotbit
+USDT_DDOS_gateio
