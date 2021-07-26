@@ -617,7 +617,7 @@ def main():
     dp.add_handler(CommandHandler("oureve", oureve))
     dp.add_handler(CommandHandler("ourmorn", ourmorn))
     dp.add_handler(CommandHandler("mypaireve", mypaireve))
-    dp.add_handler(CommandHandler("mypaireve", mypairmorn))
+    dp.add_handler(CommandHandler("mypairmorn", mypairmorn))
     dp.add_handler(CommandHandler("addpairgrant", addpairgrant))
     dp.add_handler(CommandHandler("addpairgdima", addpairdima))
     dp.add_handler(CommandHandler("dimapairs", dimapairs))
